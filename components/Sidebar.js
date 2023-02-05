@@ -14,6 +14,9 @@ import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 import getRecipientEmail from '../utils/getRecipientEmail';
 import { useState } from 'react';
 
+import Image from 'next/image'
+// import BoardsIcon from '../public/BoardsIcon.svg'
+
 function Sidebar() {
   const [user] = useAuthState(auth);
 
@@ -73,18 +76,31 @@ function Sidebar() {
     }
   };
 
+  // console.log(user)
+
+  // console.log(user.altPhotoURL)
+  // console.log(user.photoURL)
+
+
   return (
     <Container>
       <Header>
-        <UserAvatar src={user.photoURL} />
+        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+      <Image src="/BoardsIcon.svg" height={40} width={40} />
+      <h1 style={{fontSize: '2.5rem', margin: '0 0 0 20px'}}>Boards</h1>
+        </div>
         {/* <h3 style={{ fontSize: 17, color: '#495057' }}>{user?.displayName}</h3> */}
         <IconsContainer>
-          <IconButton onClick={goToHome}>
+        <UserAvatar src={user.photoURL} />
+
+          {/* <IconButton onClick={goToHome}>
             <HomeOutlinedIcon style={{ fontSize: 25 }} />
-          </IconButton>
+          </IconButton> */}
+
           {/* <IconButton>
             <MoreVertIcon style={{ fontSize: 22 }} />
           </IconButton> */}
+
           <IconButton
             onClick={() => {
               auth.signOut();
@@ -93,11 +109,12 @@ function Sidebar() {
           >
             <ExitToAppIcon style={{ fontSize: 25 }} />
           </IconButton>
+
         </IconsContainer>
       </Header>
 
       <Search>
-        <SearchIcon style={{ fontSize: 22, marginRight: '1rem' }} />
+        {/* <SearchIcon style={{ fontSize: 22, marginRight: '1rem' }} /> */}
         <SearchInput
           placeholder="Search for chats..."
           onInput={(e) => searchChats(e.target.value)}
@@ -126,6 +143,7 @@ function Sidebar() {
         />
         {/* </IconButton> */}
       </SidebarButton>
+      
     </Container>
   );
 }
@@ -176,11 +194,15 @@ const SidebarButton = styled.button`
 
 const SearchInput = styled.input`
   outline: none;
-  border: none;
+  // border: none;
   flex: 1;
   font-size: 1.5rem;
   padding: 1rem;
   border-radius: 1rem;
+  padding-left: 45px;
+  // margin-left: 20px;
+  background: url("https://static.thenounproject.com/png/101791-200.png") no-repeat left;
+  background-size: 30px;
 `;
 
 const ChatList = styled.div`

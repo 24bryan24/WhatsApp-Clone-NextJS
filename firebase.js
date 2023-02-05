@@ -1,12 +1,15 @@
 import firebase from 'firebase';
+import "firebase/storage";
+// import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGE_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_APP_ID,
+  apiKey: "AIzaSyDeO-atMvVioPi5rtalUkBHUEXW_vzJ6_A",
+  authDomain: "whatsapp-clone-nextjs-b9f88.firebaseapp.com",
+  projectId: "whatsapp-clone-nextjs-b9f88",
+  storageBucket: "whatsapp-clone-nextjs-b9f88.appspot.com",
+  messagingSenderId: "214992435394",
+  appId: "1:214992435394:web:f53939c0edb19869abe35b"
 };
 
 const app = !firebase.apps.length
@@ -19,4 +22,6 @@ const auth = app.auth();
 
 const provider = new firebase.auth.GoogleAuthProvider();
 
-export { db, auth, provider };
+const storage = app.storage().ref('images');
+
+export { db, auth, provider, storage };

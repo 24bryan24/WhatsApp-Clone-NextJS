@@ -7,7 +7,20 @@ import getRecipientEmail from '../utils/getRecipientEmail';
 import { useRouter } from 'next/dist/client/router';
 import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
 
+import { storage } from '../firebase';
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import Image from 'next/image'
+import BoardsIcon from '../public/BoardsIcon.svg'
+import { useEffect, useState } from 'react';
+
+
+
+
 function Chat({ id, users, mh }) {
+  const [messageBoardIcon, setMessageBoardIcon] = useState()
+  const [bulletinBoardIcon, setBulletinBoardIcon] = useState()
+
+
   const router = useRouter();
 
   const falseArray = [];
@@ -17,6 +30,8 @@ function Chat({ id, users, mh }) {
   const [user] = useAuthState(auth);
 
   const recipientEmail = getRecipientEmail(users, user);
+  // console.log(getRecipientEmail(users, user))
+  // console.log(recipientEmail)
 
   const enterChat = () => {
     router.push(`/chat/${id}`);
@@ -25,10 +40,20 @@ function Chat({ id, users, mh }) {
   const userChatRef = db
     .collection('users')
     .where('email', '==', getRecipientEmail(users, user));
+  // const userChatRef = db
+  // .collection('users')
+  // .where('email', '==', "test@gmail.com");
+
+    // console.log(userChatRef)
 
   const [recipientSnapshot] = useCollection(userChatRef);
 
+  console.log(useCollection(userChatRef)[0]?.docs?.[0]?.data())
+  
+
   const recipientData = recipientSnapshot?.docs?.[0]?.data();
+  // console.log(recipientData)
+  // console.log('hellloooooo')
 
   keys.forEach((key) => {
     if (mh[key] === false) {
@@ -36,15 +61,30 @@ function Chat({ id, users, mh }) {
     }
   });
 
+  useEffect(() => {
+    storage.child('MessageBoardIcon.svg').getDownloadURL().then(url => {
+      console.log(url)
+      setMessageBoardIcon(url)
+    })
+  
+    storage.child('BulletinBoardIcon.svg').getDownloadURL().then(url => {
+      console.log(url)
+      setBulletinBoardIcon(url)
+    })
+  }, [])
+
   return (
     <Container
       onClick={enterChat}
       style={falseArray.includes(recipientEmail) ? hide : show}
     >
       {recipientData ? (
-        <UserAvatar src={recipientData?.photoURL} />
+        <UserAvatar src={messageBoardIcon} />
+        // <UserAvatar src="/BoardsIcon />
       ) : (
-        <UserAvatar src={recipientEmail[0]} />
+        // <UserAvatar src={recipientEmail[0]} />
+        <UserAvatar src={bulletinBoardIcon} />
+
       )}
       <p>{recipientEmail}</p>
       <ArrowContainer className="ac">
